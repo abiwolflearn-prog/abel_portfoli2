@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abel | Full Stack Developer & Video Editor</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              papaya: '#FFEFD5',
+              papayaDark: '#FAD6A5',
+              beige: '#F5F5DC',
+              softBrown: '#8D6E63',
+              darkBrown: '#4E342E',
+              offWhite: '#FAFAF9',
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              heading: ['Poppins', 'sans-serif'],
+            },
+            boxShadow: {
+              'soft': '0 10px 40px -10px rgba(0,0,0,0.08)',
+              'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+            },
+            animation: {
+              'blob': 'blob 10s infinite',
+            },
+            keyframes: {
+              blob: {
+                '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+                '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #FAFAF9;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #D7CCC8;
+        border-radius: 5px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #8D6E63;
+      }
+
+      /* Scroll Animation Classes */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Animation Delays */
+      .delay-100 { transition-delay: 100ms; }
+      .delay-200 { transition-delay: 200ms; }
+      .delay-300 { transition-delay: 300ms; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.25"
+  }
+}
+</script>
+</head>
+  <body class="bg-offWhite text-darkBrown antialiased selection:bg-papayaDark selection:text-darkBrown">
+    
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent">
+      <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+        <div class="flex items-center justify-between h-20">
+          <!-- Logo -->
+          <div class="flex-shrink-0">
+            <a href="#home" class="text-2xl font-heading font-bold text-darkBrown tracking-tight">
+              Abel<span class="text-softBrown">.</span>
+            </a>
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-8">
+              <a href="#home" class="text-darkBrown hover:text-softBrown px-3 py-2 rounded-md text-sm font-medium transition-colors relative group">
+                Home <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-papayaDark transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="#about" class="text-darkBrown hover:text-softBrown px-3 py-2 rounded-md text-sm font-medium transition-colors relative group">
+                About <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-papayaDark transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="#projects" class="text-darkBrown hover:text-softBrown px-3 py-2 rounded-md text-sm font-medium transition-colors relative group">
+                Projects <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-papayaDark transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="#skills" class="text-darkBrown hover:text-softBrown px-3 py-2 rounded-md text-sm font-medium transition-colors relative group">
+                Skills <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-papayaDark transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="#contact" class="text-darkBrown hover:text-softBrown px-3 py-2 rounded-md text-sm font-medium transition-colors relative group">
+                Contact <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-papayaDark transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden">
+            <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-darkBrown hover:text-softBrown focus:outline-none">
+              <i data-lucide="menu" id="menu-icon"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden bg-white absolute w-full shadow-lg border-t border-gray-100">
+        <div class="px-4 pt-2 pb-4 space-y-2">
+          <a href="#home" class="mobile-link block px-3 py-3 rounded-md text-base font-medium text-darkBrown hover:bg-papaya hover:text-darkBrown transition-colors">Home</a>
+          <a href="#about" class="mobile-link block px-3 py-3 rounded-md text-base font-medium text-darkBrown hover:bg-papaya hover:text-darkBrown transition-colors">About</a>
+          <a href="#projects" class="mobile-link block px-3 py-3 rounded-md text-base font-medium text-darkBrown hover:bg-papaya hover:text-darkBrown transition-colors">Projects</a>
+          <a href="#skills" class="mobile-link block px-3 py-3 rounded-md text-base font-medium text-darkBrown hover:bg-papaya hover:text-darkBrown transition-colors">Skills</a>
+          <a href="#contact" class="mobile-link block px-3 py-3 rounded-md text-base font-medium text-darkBrown hover:bg-papaya hover:text-darkBrown transition-colors">Contact</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center relative overflow-hidden py-20 px-6 md:px-12 lg:px-24">
+      <!-- Background Blobs -->
+      <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-papaya rounded-full blur-3xl opacity-60 animate-blob"></div>
+        <div class="absolute top-1/2 right-0 w-80 h-80 bg-beige rounded-full blur-3xl opacity-70 animate-blob" style="animation-delay: 2s;"></div>
+        <div class="absolute bottom-0 left-1/3 w-72 h-72 bg-papayaDark/20 rounded-full blur-3xl animate-blob" style="animation-delay: 4s;"></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto w-full grid md:grid-cols-2 gap-12 items-center">
+        <!-- Text Content -->
+        <div class="text-left space-y-6 reveal active">
+          <h2 class="text-softBrown font-medium text-xl tracking-wide uppercase">Full Stack Developer</h2>
+          <h1 class="text-5xl md:text-7xl font-heading font-bold text-darkBrown leading-tight">
+            Hi, I’m <span class="text-transparent bg-clip-text bg-gradient-to-r from-softBrown to-papayaDark">Abel</span>
+          </h1>
+          <p class="text-lg md:text-xl text-gray-600 max-w-lg leading-relaxed">
+            I build modern, clean, and user-friendly web experiences. Bridging the gap between code and creativity as a video editor and YouTuber.
+          </p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 pt-4">
+            <a href="#projects" class="inline-flex items-center justify-center px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 active:scale-95 bg-softBrown text-white hover:bg-darkBrown shadow-lg hover:shadow-soft">
+              View My Work <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+            </a>
+            <a href="#contact" class="inline-flex items-center justify-center px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 active:scale-95 border-2 border-softBrown text-softBrown hover:bg-softBrown hover:text-white">
+              Contact Me <i data-lucide="mail" class="ml-2 w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="relative flex justify-center reveal delay-200 active">
+          <div class="relative w-72 h-72 md:w-96 md:h-96">
+            <div class="absolute inset-0 border-2 border-papaya rounded-full transform translate-x-4 translate-y-4"></div>
+            <div class="w-full h-full rounded-full overflow-hidden shadow-soft border-4 border-white bg-white">
+              <img src="https://picsum.photos/800/800" alt="Abel" class="w-full h-full object-cover">
+            </div>
+            
+            <!-- Floating Badge -->
+            <div class="absolute -bottom-4 -left-4 bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-lg border border-papaya animate-bounce" style="animation-duration: 3s;">
+              <span class="text-2xl">🎥</span>
+              <span class="font-bold text-darkBrown ml-2">Content Creator</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-white">
+      <div class="max-w-7xl mx-auto grid md:grid-cols-12 gap-12">
+        <!-- Bio -->
+        <div class="md:col-span-7 space-y-6 reveal">
+          <h3 class="text-papayaDark font-bold uppercase tracking-widest text-sm mb-2">About Me</h3>
+          <h2 class="text-4xl font-heading font-bold text-darkBrown mb-6">Blending Tech & Creativity</h2>
+          <p class="text-gray-600 leading-relaxed mb-4">
+            Hello! I'm Abel, a passionate developer who loves turning complex problems into simple, beautiful, and intuitive interface designs.
+          </p>
+          <p class="text-gray-600 leading-relaxed mb-6">
+            My journey started with video editing, teaching me the importance of storytelling and flow. Now, I apply those same principles to Full Stack Development, ensuring every user interaction feels seamless. When I'm not coding, I'm creating content for YouTube, sharing my learning journey and tech tips.
+          </p>
+        </div>
+
+        <!-- Timeline -->
+        <div class="md:col-span-5 reveal delay-200">
+          <h3 class="text-xl font-heading font-semibold text-darkBrown mb-8">My Journey</h3>
+          <div class="space-y-8 border-l-2 border-papaya ml-3 pl-8 relative">
+            <div class="relative">
+              <span class="absolute -left-[39px] top-1 h-5 w-5 rounded-full bg-papaya border-4 border-white shadow-sm"></span>
+              <h4 class="text-lg font-bold text-darkBrown">Full Stack Developer</h4>
+              <span class="text-sm text-softBrown font-medium bg-papaya/30 px-2 py-1 rounded-md inline-block my-1">2023 – Present</span>
+              <p class="text-gray-500 text-sm mt-2">Building scalable web applications and interactive user interfaces using the MERN stack.</p>
+            </div>
+            <div class="relative">
+              <span class="absolute -left-[39px] top-1 h-5 w-5 rounded-full bg-papaya border-4 border-white shadow-sm"></span>
+              <h4 class="text-lg font-bold text-darkBrown">Video Editor & YouTuber</h4>
+              <span class="text-sm text-softBrown font-medium bg-papaya/30 px-2 py-1 rounded-md inline-block my-1">2021 – Present</span>
+              <p class="text-gray-500 text-sm mt-2">Creating engaging tech content, tutorials, and high-quality video edits for a growing audience.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-offWhite">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+          <h3 class="text-papayaDark font-bold uppercase tracking-widest text-sm mb-2">Portfolio</h3>
+          <h2 class="text-4xl font-heading font-bold text-darkBrown">Recent Projects</h2>
+          <p class="text-gray-600 mt-4">A selection of my favorite works, ranging from utility apps to creative web platforms.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Project 1 -->
+          <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col reveal delay-100">
+            <div class="relative overflow-hidden h-64">
+              <div class="absolute inset-0 bg-darkBrown/10 group-hover:bg-darkBrown/0 transition-colors duration-300 z-10"></div>
+              <img src="https://picsum.photos/600/400?random=1" alt="TaskFlow" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-8 flex-1 flex flex-col bg-gradient-to-b from-white to-papaya/10">
+              <div class="flex-1">
+                <h3 class="text-2xl font-heading font-bold text-darkBrown mb-2">TaskFlow</h3>
+                <p class="text-gray-600 mb-4 text-sm leading-relaxed">A comprehensive To-Do & Task Manager application featuring CRUD operations, category filtering, and local storage persistence.</p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">React</span>
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">Tailwind</span>
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">LocalStorage</span>
+                </div>
+              </div>
+              <div class="flex gap-4 mt-auto pt-4 border-t border-gray-100">
+                <a href="#" class="flex items-center text-sm font-semibold text-darkBrown hover:text-softBrown transition-colors">
+                  Live Demo <i data-lucide="external-link" class="ml-1 w-4 h-4"></i>
+                </a>
+                <a href="#" class="flex items-center text-sm font-semibold text-darkBrown hover:text-softBrown transition-colors">
+                  GitHub <i data-lucide="github" class="ml-1 w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2 -->
+          <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col reveal delay-200">
+            <div class="relative overflow-hidden h-64">
+              <div class="absolute inset-0 bg-darkBrown/10 group-hover:bg-darkBrown/0 transition-colors duration-300 z-10"></div>
+              <img src="https://picsum.photos/600/400?random=2" alt="SkyCast" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-8 flex-1 flex flex-col bg-gradient-to-b from-white to-papaya/10">
+              <div class="flex-1">
+                <h3 class="text-2xl font-heading font-bold text-darkBrown mb-2">SkyCast</h3>
+                <p class="text-gray-600 mb-4 text-sm leading-relaxed">Real-time Weather application powered by external APIs. Displays live temperature, humidity, and weather conditions with a clean UI.</p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">JavaScript</span>
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">OpenWeather API</span>
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">CSS3</span>
+                </div>
+              </div>
+              <div class="flex gap-4 mt-auto pt-4 border-t border-gray-100">
+                <a href="#" class="flex items-center text-sm font-semibold text-darkBrown hover:text-softBrown transition-colors">
+                  Live Demo <i data-lucide="external-link" class="ml-1 w-4 h-4"></i>
+                </a>
+                <a href="#" class="flex items-center text-sm font-semibold text-darkBrown hover:text-softBrown transition-colors">
+                  GitHub <i data-lucide="github" class="ml-1 w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+           <!-- Project 3 -->
+           <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col reveal delay-100">
+            <div class="relative overflow-hidden h-64">
+              <div class="absolute inset-0 bg-darkBrown/10 group-hover:bg-darkBrown/0 transition-colors duration-300 z-10"></div>
+              <img src="https://picsum.photos/600/400?random=3" alt="ShopEase" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-8 flex-1 flex flex-col bg-gradient-to-b from-white to-papaya/10">
+              <div class="flex-1">
+                <h3 class="text-2xl font-heading font-bold text-darkBrown mb-2">ShopEase</h3>
+                <p class="text-gray-600 mb-4 text-sm leading-relaxed">A functional E-Commerce mini store featuring a dynamic cart system, product filtering, and responsive product cards.</p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">React</span>
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">Context API</span>
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">Styled Components</span>
+                </div>
+              </div>
+              <div class="flex gap-4 mt-auto pt-4 border-t border-gray-100">
+                <a href="#" class="flex items-center text-sm font-semibold text-darkBrown hover:text-softBrown transition-colors">
+                  Live Demo <i data-lucide="external-link" class="ml-1 w-4 h-4"></i>
+                </a>
+                <a href="#" class="flex items-center text-sm font-semibold text-darkBrown hover:text-softBrown transition-colors">
+                  GitHub <i data-lucide="github" class="ml-1 w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+           <!-- Project 4 -->
+           <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 flex flex-col reveal delay-200">
+            <div class="relative overflow-hidden h-64">
+              <div class="absolute inset-0 bg-darkBrown/10 group-hover:bg-darkBrown/0 transition-colors duration-300 z-10"></div>
+              <img src="https://picsum.photos/600/400?random=4" alt="Blogify" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="p-8 flex-1 flex flex-col bg-gradient-to-b from-white to-papaya/10">
+              <div class="flex-1">
+                <h3 class="text-2xl font-heading font-bold text-darkBrown mb-2">Blogify</h3>
+                <p class="text-gray-600 mb-4 text-sm leading-relaxed">A simple, clean multi-page blog application focused on typography and reading experience.</p>
+                <div class="flex flex-wrap gap-2 mb-6">
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">HTML5</span>
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">CSS3</span>
+                  <span class="text-xs font-medium text-softBrown bg-papaya px-3 py-1 rounded-full">JavaScript</span>
+                </div>
+              </div>
+              <div class="flex gap-4 mt-auto pt-4 border-t border-gray-100">
+                <a href="#" class="flex items-center text-sm font-semibold text-darkBrown hover:text-softBrown transition-colors">
+                  Live Demo <i data-lucide="external-link" class="ml-1 w-4 h-4"></i>
+                </a>
+                <a href="#" class="flex items-center text-sm font-semibold text-darkBrown hover:text-softBrown transition-colors">
+                  GitHub <i data-lucide="github" class="ml-1 w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-white">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16 reveal">
+          <h3 class="text-papayaDark font-bold uppercase tracking-widest text-sm mb-2">Expertise</h3>
+          <h2 class="text-4xl font-heading font-bold text-darkBrown">Technical Skills</h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Frontend -->
+          <div class="bg-offWhite rounded-2xl p-6 shadow-sm border border-gray-100 text-center hover:border-papaya transition-colors reveal delay-100">
+            <h4 class="font-heading font-semibold text-lg text-darkBrown mb-6 pb-2 border-b border-gray-200">Frontend Development</h4>
+            <div class="flex flex-col gap-3">
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">HTML</div>
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">CSS</div>
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">JavaScript</div>
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">React</div>
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">Tailwind</div>
+            </div>
+          </div>
+
+          <!-- Backend -->
+          <div class="bg-offWhite rounded-2xl p-6 shadow-sm border border-gray-100 text-center hover:border-papaya transition-colors reveal delay-200">
+            <h4 class="font-heading font-semibold text-lg text-darkBrown mb-6 pb-2 border-b border-gray-200">Backend Development</h4>
+            <div class="flex flex-col gap-3">
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">Node.js</div>
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">Express</div>
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">MongoDB</div>
+            </div>
+          </div>
+
+          <!-- Tools -->
+          <div class="bg-offWhite rounded-2xl p-6 shadow-sm border border-gray-100 text-center hover:border-papaya transition-colors reveal delay-300">
+            <h4 class="font-heading font-semibold text-lg text-darkBrown mb-6 pb-2 border-b border-gray-200">Tools & Workflow</h4>
+            <div class="flex flex-col gap-3">
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">Git</div>
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">VSCode</div>
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">Figma</div>
+            </div>
+          </div>
+
+          <!-- Media -->
+          <div class="bg-offWhite rounded-2xl p-6 shadow-sm border border-gray-100 text-center hover:border-papaya transition-colors reveal delay-100">
+            <h4 class="font-heading font-semibold text-lg text-darkBrown mb-6 pb-2 border-b border-gray-200">Media & Content</h4>
+            <div class="flex flex-col gap-3">
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">Premiere Pro</div>
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">Storyboarding</div>
+              <div class="w-full bg-white py-2 rounded-lg text-gray-600 text-sm font-medium shadow-sm border border-gray-50">Content Creation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 md:py-32 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-offWhite to-papaya/20">
+      <div class="max-w-4xl mx-auto bg-white/80 backdrop-blur-md rounded-3xl shadow-glass overflow-hidden reveal">
+        <div class="grid md:grid-cols-2">
+          
+          <!-- Contact Info -->
+          <div class="p-10 bg-darkBrown text-papaya flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-heading font-bold mb-4 text-white">Let's Connect</h3>
+              <p class="text-gray-300 mb-8 text-sm leading-relaxed">
+                Whether you have a project in mind, want to collaborate on a video, or just want to say hi—I'd love to hear from you.
+              </p>
+              
+              <div class="space-y-4">
+                <div class="flex items-center gap-3 text-sm">
+                  <i data-lucide="mail" class="text-papaya w-4 h-4"></i>
+                  <span>hello@abeldev.com</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-12">
+              <h4 class="text-sm font-semibold text-white mb-4 uppercase tracking-wider">Find me on</h4>
+              <div class="flex gap-4">
+                <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-papaya hover:text-darkBrown transition-colors">
+                  <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-papaya hover:text-darkBrown transition-colors">
+                  <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                <a href="#" class="p-2 bg-white/10 rounded-full hover:bg-papaya hover:text-darkBrown transition-colors">
+                  <i data-lucide="youtube" class="w-5 h-5"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <div class="p-10">
+            <form class="space-y-5" onsubmit="event.preventDefault()">
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                <input type="text" id="name" class="w-full px-4 py-3 rounded-lg bg-offWhite border border-gray-200 focus:border-papayaDark focus:ring-1 focus:ring-papayaDark outline-none transition-all" placeholder="John Doe">
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" id="email" class="w-full px-4 py-3 rounded-lg bg-offWhite border border-gray-200 focus:border-papayaDark focus:ring-1 focus:ring-papayaDark outline-none transition-all" placeholder="john@example.com">
+              </div>
+              <div>
+                <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-lg bg-offWhite border border-gray-200 focus:border-papayaDark focus:ring-1 focus:ring-papayaDark outline-none transition-all resize-none" placeholder="Tell me about your project..."></textarea>
+              </div>
+              
+              <button type="submit" class="w-full inline-flex items-center justify-center px-8 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 active:scale-95 bg-softBrown text-white hover:bg-darkBrown shadow-lg hover:shadow-soft">
+                Send Message <i data-lucide="send" class="ml-2 w-4 h-4"></i>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-beige py-12 border-t border-papayaDark/20">
+      <div class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="text-center md:text-left">
+          <span class="text-xl font-heading font-bold text-darkBrown tracking-tight block">
+            Abel<span class="text-softBrown">.</span>
+          </span>
+          <p class="text-sm text-gray-500 mt-1">
+            &copy; 2025 Abel. All Rights Reserved.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-1 text-sm text-gray-500">
+          <span>Made with</span>
+          <i data-lucide="heart" class="w-4 h-4 text-red-400 fill-current"></i>
+          <span>and Coffee</span>
+        </div>
+
+        <div class="flex gap-6">
+           <a href="#" class="text-gray-500 hover:text-softBrown transition-colors">
+             <i data-lucide="github" class="w-5 h-5"></i>
+           </a>
+           <a href="#" class="text-gray-500 hover:text-softBrown transition-colors">
+             <i data-lucide="linkedin" class="w-5 h-5"></i>
+           </a>
+           <a href="#" class="text-gray-500 hover:text-softBrown transition-colors">
+             <i data-lucide="youtube" class="w-5 h-5"></i>
+           </a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Main Script -->
+    <script>
+      // Initialize Lucide Icons
+      lucide.createIcons();
+
+      // Mobile Menu Logic
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+      const menuIcon = document.getElementById('menu-icon');
+
+      let isMenuOpen = false;
+
+      mobileMenuBtn.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        if (isMenuOpen) {
+          mobileMenu.classList.remove('hidden');
+          menuIcon.setAttribute('data-lucide', 'x');
+        } else {
+          mobileMenu.classList.add('hidden');
+          menuIcon.setAttribute('data-lucide', 'menu');
+        }
+        lucide.createIcons(); // Re-render icons after changing attribute
+      });
+
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          isMenuOpen = false;
+          mobileMenu.classList.add('hidden');
+          menuIcon.setAttribute('data-lucide', 'menu');
+          lucide.createIcons();
+        });
+      });
+
+      // Navbar Scroll Effect
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) {
+          navbar.classList.add('bg-white/70', 'backdrop-blur-md', 'shadow-sm');
+          navbar.classList.remove('bg-transparent');
+        } else {
+          navbar.classList.remove('bg-white/70', 'backdrop-blur-md', 'shadow-sm');
+          navbar.classList.add('bg-transparent');
+        }
+      });
+
+      // Reveal Animations on Scroll
+      const revealElements = document.querySelectorAll('.reveal');
+      
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            // Optional: Unobserve after revealing if you only want it to happen once
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+      });
+
+      revealElements.forEach(el => revealObserver.observe(el));
+    </script>
+  </body>
+</html>
